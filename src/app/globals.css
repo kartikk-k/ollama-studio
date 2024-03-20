@@ -9,7 +9,7 @@
 @media (prefers-color-scheme: dark) {
      :root {
         --foreground: #A1ADB9;
-        --background: #181A1E;
+        --background: #1D1F22;
     }
 }
 
@@ -22,4 +22,31 @@ body {
     .text-balance {
         text-wrap: balance;
     }
+    .all-center {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
 }
+/* 282C30 */
+/* width */
+::-webkit-scrollbar {
+    width: 10px;
+  }
+  
+  /* Track */
+  ::-webkit-scrollbar-track {
+    background: none; 
+  }
+   
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background: #282C30; 
+    border-radius: 99px;
+  }
+  
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    cursor: pointer;
+    background: #30353a;
+  }

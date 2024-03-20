@@ -4,6 +4,7 @@ import React, { useState } from 'react'
 import Sidebar from '@/components/Sidebar'
 import CloseSidebar from '@/assets/icons/closeSidebar.svg'
 import Image from 'next/image'
+import ChatBox from '@/components/ChatBox'
 
 function Page() {
 
@@ -14,7 +15,7 @@ function Page() {
 
             <div className='h-full relative'>
                 {isSidebarOpen && (
-                    <div className='bg-[#24272B] border-r border-border w-[300px] h-full'>
+                    <div className='bg-secondary border-r border-border w-[300px] h-full'>
                         <Sidebar
                             onClose={() => setIsSidebarOpen(false)}
                         />
@@ -39,8 +40,8 @@ function Page() {
 
             </div>
 
-            <div className='p-4 flex-grow'>
-                <h1>world</h1>
+            <div className='flex-grow'>
+               <ChatBox />
             </div>
 
         </main>
