@@ -46,7 +46,7 @@ function Sidebar({ onClose }: SidebarProps) {
                     </div>
 
                     {/* create new */}
-                    <button className='bg-[#525B64] h-10 rounded-full text-sm  gap-2 text-white w-full shadow-inner shadow-black/25'>
+                    <button className='h-10 rounded-full text-sm  gap-2 text-white w-full create-btn'>
                         Create new
                     </button>
                 </div>
