@@ -65,8 +65,7 @@ function ChatBox() {
                         contentEditable
                         className='w-full outline-none leading-5 pt-1.5'
                     >
-                        How to use Ollama?
-                        Also suggest some models.
+                        ask a question...
                     </div>
 
                     <button className='h-8 w-8 shrink-0 rounded-full bg-[#28EBA5]/20 all-center hover:brightness-125'>

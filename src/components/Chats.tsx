@@ -39,10 +39,22 @@ function Chats() {
 
                             <div className='space-y-8'>
                                 <p className=''>
+                                    Ollama is an open-source tool designed for running large language models locally on your computer. It allows users to run models like Llama 2, Mistral, and others, customize and create their own models, and download available models for use. Ollama is available for macOS, Linux, and has a Windows version in preview.
 
-                                    Kartik Khorwal&apos;s coding style, as reflected on his GitHub profile, emphasizes building websites and web apps with a focus on seamless user experiences across devices. He is described as an engineer with a passion for developing projects with stunning user interfaces. His GitHub repositories highlight his expertise in technologies like React, Next.js, Tailwind CSS, and Framer Motion, showcasing a commitment to creating visually appealing and user-friendly web applications
                                     <br />
-                                    Kartik Khorwal is recognized for his talent as a designer and content creator, showcasing his skills through projects like the VSCode logo and a cloud code editor sidebar. His work reflects creativity and proficiency in design, indicating a high level of talent in his field.
+                                    <br />
+                                    When it comes to suggesting models to explore with Ollama, you can consider the following based on the provided sources: <br />
+                                    <ul className='list-disc pl-6 pt-2'>
+                                        <li>
+                                            Llama 2: A model mentioned in the sources that can be a good starting point for exploration
+                                        </li>
+                                        <li>
+                                            Deep Coder 33b: Although it is noted to be a large model, it is highlighted as potentially one of the best open-source language models, worth considering for specific tasks
+                                        </li>
+                                    </ul>
+
+                                    <br />
+                                    The working of Ollama LLM (Large Language Model) involves running large language models locally on your computer. Users can install Ollama on their machines, which allows them to access and utilize models like Llama 2 and Mistral. Ollama simplifies the process of running LLMs, making it accessible even for individuals with limited coding skills. By installing Ollama and specific models like Mistral 7b, users can interact with these models through APIs, enabling them to generate responses and integrate them into various applications or workflows. Ollama&apos;s user-friendly approach and support for different models make it a valuable tool for leveraging the power of large language models in a local and private environment
                                 </p>
 
                                 <div className='flex gap-4'>

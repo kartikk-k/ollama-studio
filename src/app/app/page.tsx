@@ -15,7 +15,7 @@ function Page() {
 
             <div className='h-full relative'>
                 {isSidebarOpen && (
-                    <div className='bg-secondary border-r border-border w-[300px] h-full'>
+                    <div className='bg-secondary border-r border-border w-[280px] h-full'>
                         <Sidebar
                             onClose={() => setIsSidebarOpen(false)}
                         />
