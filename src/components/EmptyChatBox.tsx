@@ -7,7 +7,7 @@ import PaperClipIcon from '@/assets/icons/paperclip.svg'
 import ArrowUpIcon from '@/assets/icons/arrowUp.svg'
 import Chats from './Chats'
 
-function ChatBox() {
+function EmptyChatBox() {
     return (
         <div className='text-sm h-full flex flex-col'>
 
@@ -47,7 +47,10 @@ function ChatBox() {
             </div>
 
             {/* <div className='h-full relative overflow-y-scroll'> */}
-                <Chats />
+                {/* <Chats /> */}
+                <div className='h-full all-center'>
+                    <p>Select thread to chat</p>
+                </div>
             {/* </div> */}
 
             <div className='p-4'>
@@ -82,4 +85,4 @@ function ChatBox() {
     )
 }
 
-export default ChatBox
+export default EmptyChatBox

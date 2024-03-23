@@ -1,8 +1,10 @@
 "use client"
 
-import { useState } from 'react'
+import React, { useState } from 'react'
 import Sidebar from '@/components/Sidebar'
-import EmptyChatBox from '@/components/EmptyChatBox'
+import CloseSidebar from '@/assets/icons/closeSidebar.svg'
+import Image from 'next/image'
+import ChatBox from '@/components/ChatBox'
 
 function Page() {
 
@@ -39,8 +41,7 @@ function Page() {
             </div>
 
             <div className='flex-grow'>
-               {/* <ChatBox /> */}
-               <EmptyChatBox />
+               <ChatBox />
             </div>
 
         </main>

@@ -10,6 +10,13 @@ interface SidebarProps {
 }
 
 function Sidebar({ onClose }: SidebarProps) {
+
+    // const a = useCe
+
+    const createThread = () => {
+
+    }
+
     return (
         <div>
             <div className='flex items-center justify-between border-b border-border h-16 p-4'>
@@ -46,7 +53,7 @@ function Sidebar({ onClose }: SidebarProps) {
                     </div>
 
                     {/* create new */}
-                    <button className='h-10 rounded-full text-sm  gap-2 text-white w-full create-btn'>
+                    <button onClick={createThread} className='h-10 rounded-full text-sm  gap-2 text-white w-full create-btn'>
                         Create new
                     </button>
                 </div>
@@ -55,7 +62,7 @@ function Sidebar({ onClose }: SidebarProps) {
                     <p className='text-[#6D7884] text-xs'>History</p>
 
                     <div className='space-y-6'>
-                        <div className='flex items-start gap-2'>
+                        <div className='flex hover:text-white items-start gap-2'>
                             <Image
                                 src={TextIcon}
                                 alt='text icon'
