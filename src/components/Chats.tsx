@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useRef } from 'react'
 import Image from 'next/image'
 import CopyIcon from '@/assets/icons/copy.svg'
 import RewriteIcon from '@/assets/icons/rewrite.svg'
@@ -7,14 +7,23 @@ import moment from 'moment'
 
 interface props {
     chats: Chat[]
-    onGoingChat: Chat | null
     responseTime: number
 }
 
-function Chats({ chats, onGoingChat, responseTime }: props) {
+function Chats({ chats, responseTime }: props) {
+
+
+    const ref = useRef<HTMLDivElement>(null)
+    useEffect(() => {
+        if (!ref.current) return
+        ref.current.scrollTop = ref.current.scrollHeight
+    }, [responseTime])
 
     return (
-        <div className='relative h-full overflow-y-scroll space-y-24'>
+        <div
+            ref={ref}
+            className='relative h-full overflow-y-scroll space-y-12'
+        >
 
             {chats.map(chat => (
 
@@ -38,7 +47,7 @@ function Chats({ chats, onGoingChat, responseTime }: props) {
                         <div className='border-b border-border flex items-start pb-4'>
                             <div className='w-40 shrink-0'>
                                 <p className='text-[#28EBA5] font-medium'>Mixtral</p>
-                                <p className='text-[#A1ADB9] text-xxs'>response time: {chat.responseTime}</p>
+                                <p className='text-[#A1ADB9] text-xxs'>response time: {chat.id === 'running' ? responseTime : chat.responseTime}</p>
                             </div>
 
                             <div className='space-y-8'>
@@ -80,7 +89,7 @@ function Chats({ chats, onGoingChat, responseTime }: props) {
 
             ))}
 
-            {onGoingChat && (
+            {/* {onGoingChat && (
                 <div className=''>
 
                     <div className='sticky z-10 top-0 p-4 pb-0 bg-[#1D1F22] backdrop-blur-sm'>
@@ -137,7 +146,7 @@ function Chats({ chats, onGoingChat, responseTime }: props) {
                     </div>
 
                 </div>
-            )}
+            )} */}
 
         </div>
     )

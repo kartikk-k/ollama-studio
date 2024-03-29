@@ -15,8 +15,9 @@ function ChatBox({ threadId }: props) {
 
     const [chats, setChats] = useState<Chat[]>([])
     const [responseTime, setResponseTime] = useState<number>(0.0)
-    const [onGoingChat, setOnGoingChat] = useState<Chat | null>(null)
     const [question, setQuestion] = useState<string>('')
+    const [response, setResponse] = useState<string>('')
+    const [isRunning, setIsRunning] = useState<boolean>(false)
 
     const responseTimeRef = useRef<number>(0.0);
     const ref = useRef<HTMLDivElement>(null)
@@ -25,15 +26,23 @@ function ChatBox({ threadId }: props) {
         responseTimeRef.current = responseTime;
     }, [responseTime]);
 
+    useEffect(() => {
+        if (!response.trim()) return
+        setChats(prev => prev.map(chat => chat.id === 'running'
+            ? { ...chat, response}
+            : chat))
+    }, [response])
+
 
     const generateResponse = async () => {
-        if (!question.trim() || onGoingChat) return
+        if (!question.trim() || isRunning) return
         setResponseTime(0.0)
         setQuestion('')
+        setIsRunning(true)
         ref.current!.innerText = ''
 
         const newChat = {
-            id: new Date().toISOString(),
+            id: 'running',
             createdAt: new Date(),
             chatId: threadId,
             model: 'llama2',
@@ -43,9 +52,8 @@ function ChatBox({ threadId }: props) {
             starred: false
         }
 
-        streamResponse(newChat, '')
+        handleChatCreation(newChat)
 
-        // responseTimer.start()
         const timer = setInterval(() => {
             setResponseTime(prev => parseFloat((prev + 0.1).toFixed(1)))
         }, 100)
@@ -70,7 +78,8 @@ function ChatBox({ threadId }: props) {
 
                 if (done) {
                     clearInterval(timer)
-                    handleResponse(newChat, answer)
+                    setIsRunning(false)
+                    handleResponseComplete()
                     break;
                 }
 
@@ -84,28 +93,22 @@ function ChatBox({ threadId }: props) {
                     if (line.trim() === '') continue;
                     const parsedResponse = JSON.parse(line);
                     answer = answer.concat(parsedResponse.response); // Process each response word
-                    streamResponse(newChat, answer)
+                    setResponse(prev => prev.concat(parsedResponse.response))
                 }
             }
 
         })
     }
 
-    useEffect(() => {
-        setOnGoingChat(null)
-        setResponseTime(0.0)
-    }, [chats])
-
-    const streamResponse = (newChat: Chat, response: string) => {
-        setOnGoingChat(prev => prev === null ? { ...newChat, response: response } : { ...prev, response: response })
+    const handleChatCreation = (newChat: Chat) => {
+        setChats(prev => [...prev, newChat])
     }
 
-    const handleResponse = (chat: Chat, response: string) => {
-        console.log("ON GOING", onGoingChat)
-        setChats(prev => [
-            ...prev,
-            { ...chat, response: response, responseTime: responseTimeRef.current }
-        ])
+    const handleResponseComplete = () => {
+        setChats(prev => prev.map(chat => chat.id === 'running'
+            ? { ...chat, id: new Date().toISOString(), responseTime: responseTimeRef.current }
+            : chat))
+        setResponse('')
     }
 
     return (
@@ -146,13 +149,10 @@ function ChatBox({ threadId }: props) {
                 </div>
             </div>
 
-            {/* <div className='h-full relative overflow-y-scroll'> */}
             <Chats
                 chats={chats}
-                onGoingChat={onGoingChat}
                 responseTime={responseTime}
             />
-            {/* </div> */}
 
             <div className='p-4'>
                 <div className='bg-secondary rounded-2xl min-h-12 h-auto flex items-start gap-2 p-3'>
@@ -170,7 +170,7 @@ function ChatBox({ threadId }: props) {
                             ref={ref}
                             contentEditable
                             onInput={e => setQuestion(e.currentTarget.textContent || '')}
-                            className='w-full outline-none leading-5 pt-1.5'
+                            className='w-full relative z-10 outline-none leading-5 pt-1.5'
                         >
                         </div>
 
@@ -183,7 +183,7 @@ function ChatBox({ threadId }: props) {
                     </div>
 
                     <button
-                        disabled={!question.trim() || !!onGoingChat}
+                        disabled={!question.trim() || isRunning}
                         onClick={generateResponse}
                         className='h-8 w-8 shrink-0 disabled:opacity-50 rounded-full bg-[#28EBA5]/20 all-center hover:brightness-125'
                     >
