@@ -1,4 +1,4 @@
-import { CreateThread } from "@/helpers/idb/thread"
+import { CreateThread, GetThreads } from "@/helpers/idb/thread"
 import { create } from "zustand"
 
 interface Store {
@@ -10,17 +10,14 @@ interface Store {
 
     currentThread: Thread['id'] | null
 
-    createNewThread: (title: string) => void
-    // updateThreadName: (threadId: Thread['id'], newName: string) => void
-    // deleteThread: (threadId: Thread['id']) => void
+    createNewThread: (title: string) => Promise<void>
+    getThreadsFromDB: () => Promise<void>
 
-    // addChat: (chat: Chat) => void
-    // updateChat: (chat: Chat) => void
-    // deleteChat: (chatId: Chat['id']) => void
-    
-    // currentModel: Model | null
-    // switchModel: (model: Model) => void
+    models: Model[]
+    getModels: () => Promise<void>
 
+    ollamaPORT: string
+    setOllamaPORT: (url: string) => void
 }
 
 const useCentralStore = create<Store>((set) => ({
@@ -32,8 +29,38 @@ const useCentralStore = create<Store>((set) => ({
 
         await CreateThread(title).then(res => {
             console.log(res)
+            set(state => ({
+                threads: [...state.threads, {
+                    info: res,
+                    chats: []
+                }]
+            }))
+
         })
+    },
+
+    getThreadsFromDB: async () => {
+        await GetThreads()
+        .then(res => {
+            set(state => ({
+                threads: res.map(thread => ({
+                    info: thread,
+                    chats: []
+                }))
+            }))
+        })
+    },
+
+    models: [],
+    getModels: async () => {
         
+    },
+
+    ollamaPORT: '11434',
+    setOllamaPORT: (url) => {
+        set({ ollamaPORT: url })
     }
 
 }))
+
+export default useCentralStore;

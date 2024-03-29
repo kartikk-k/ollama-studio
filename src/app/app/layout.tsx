@@ -1,14 +1,17 @@
 "use client"
 
+import React, { useState } from 'react'
 import InitializeDB from '@/helpers/idb'
-import React from 'react'
+import useCentralStore from '@/stores/centralStore'
 
 function Layout({ children }: { children: React.ReactNode }) {
 
-    const [isInitialized, setIsInitialized] = React.useState(false)
+    const [isInitialized, setIsInitialized] = useState(false)
+    const GetThreads = useCentralStore(state => state.getThreadsFromDB)
 
     InitializeDB().then(() => {
         setIsInitialized(true)
+        GetThreads()
         console.log('DB initialized')
     }).catch(err => {
         console.error(err)

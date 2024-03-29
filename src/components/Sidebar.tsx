@@ -4,6 +4,9 @@ import Logo from '@/assets/icons/logo.svg'
 import CloseIcon from '@/assets/icons/close.svg'
 import SearchIcon from '@/assets/icons/search.svg'
 import TextIcon from '@/assets/icons/text.svg'
+import { CreateThread } from '@/helpers/idb/thread'
+import useCentralStore from '@/stores/centralStore'
+import Link from 'next/link'
 
 interface SidebarProps {
     onClose: () => void
@@ -11,10 +14,13 @@ interface SidebarProps {
 
 function Sidebar({ onClose }: SidebarProps) {
 
-    // const a = useCe
+    const { createNewThread, threads } = useCentralStore(state => ({
+        createNewThread: state.createNewThread,
+        threads: state.threads
+    }))
 
-    const createThread = () => {
-
+    const createThread = async () => {
+        await createNewThread('New Chat')
     }
 
     return (
@@ -62,14 +68,20 @@ function Sidebar({ onClose }: SidebarProps) {
                     <p className='text-[#6D7884] text-xs'>History</p>
 
                     <div className='space-y-6'>
-                        <div className='flex hover:text-white items-start gap-2'>
-                            <Image
-                                src={TextIcon}
-                                alt='text icon'
-                            />
-                            <p>How to use Ollama?</p>
-                        </div>
-
+                        {threads.map(thread => (
+                            <Link
+                                href={`/app/t/${thread.info.id}`}
+                                key={thread.info.id}
+                                className='flex hover:text-white items-start gap-2'
+                            >
+                                <Image
+                                    src={TextIcon}
+                                    alt='text icon'
+                                />
+                                <p>{thread.info.title}</p>
+                            </Link>
+                        ))}
+                        {/* 
                         <div className='flex items-start gap-2'>
                             <Image
                                 src={TextIcon}
@@ -83,7 +95,7 @@ function Sidebar({ onClose }: SidebarProps) {
                                 alt='text icon'
                             />
                             <p>Best platform for using LLMs in cloud through API</p>
-                        </div>
+                        </div> */}
                     </div>
                 </div>
 

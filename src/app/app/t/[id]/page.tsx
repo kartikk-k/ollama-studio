@@ -6,7 +6,7 @@ import CloseSidebar from '@/assets/icons/closeSidebar.svg'
 import Image from 'next/image'
 import ChatBox from '@/components/ChatBox'
 
-function Page() {
+function Page({params}: {params: {id: string}}) {
 
     const [isSidebarOpen, setIsSidebarOpen] = useState(true)
 
@@ -41,7 +41,9 @@ function Page() {
             </div>
 
             <div className='flex-grow'>
-               <ChatBox />
+               <ChatBox
+                threadId={params.id}
+               />
             </div>
 
         </main>

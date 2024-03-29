@@ -30,7 +30,7 @@ const GetChats = async (start?:string, count?:Number) => {
     return chats as Chat[]
 }
 
-const UpdateChat = async (chat: Chat) => {
+const UpdateChat = async (chat: Omit<Chat, 'id' | 'createdAt'>) => {
     const db = await openDB('ollama-studio-db')
     const store = db.transaction("chats", "readwrite").objectStore("chats")
 

@@ -6,7 +6,7 @@ const CreateThread = async (title: string) => {
     const store = db.transaction("threads", "readwrite").objectStore("threads")
 
     const thread: Thread = {
-        id: new Date().getTime().toString(),
+        id: new Date().toISOString(),
         title: title,
         createdAt: new Date(),
     }

@@ -66,6 +66,7 @@ function EmptyChatBox() {
 
                     <div
                         contentEditable
+                        suppressContentEditableWarning
                         className='w-full outline-none leading-5 pt-1.5'
                     >
                         ask a question...
