@@ -30,6 +30,15 @@ const GetChats = async (start?:string, count?:Number) => {
     return chats as Chat[]
 }
 
+const GetChatsByThread = async (threadId: string) => {
+    const db = await openDB('ollama-studio-db')
+    const store = db.transaction("chats", "readwrite").objectStore("chats")
+
+    const chats = await store.getAll() as Chat[]
+
+    return chats.filter(chat => chat.chatId === threadId) as Chat[]
+}
+
 const UpdateChat = async (chat: Omit<Chat, 'id' | 'createdAt'>) => {
     const db = await openDB('ollama-studio-db')
     const store = db.transaction("chats", "readwrite").objectStore("chats")
@@ -49,4 +58,4 @@ const DeleteChat = async (id: string) => {
 }
 
 
-export { CreateChat, ReadChat, GetChats, UpdateChat, DeleteChat };
+export { CreateChat, ReadChat, GetChats, GetChatsByThread, UpdateChat, DeleteChat };

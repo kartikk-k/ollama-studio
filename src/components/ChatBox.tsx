@@ -6,6 +6,7 @@ import PenIcon from '@/assets/icons/pen.svg'
 import PaperClipIcon from '@/assets/icons/paperclip.svg'
 import ArrowUpIcon from '@/assets/icons/arrowUp.svg'
 import Chats from './Chats'
+import { CreateChat, GetChatsByThread } from '@/helpers/idb/chats'
 
 interface props {
     threadId: string
@@ -14,12 +15,13 @@ interface props {
 function ChatBox({ threadId }: props) {
 
     const [chats, setChats] = useState<Chat[]>([])
-    const [responseTime, setResponseTime] = useState<number>(0.0)
-    const [question, setQuestion] = useState<string>('')
-    const [response, setResponse] = useState<string>('')
-    const [isRunning, setIsRunning] = useState<boolean>(false)
+    const [responseTime, setResponseTime] = useState(0.0)
+    const [question, setQuestion] = useState('')
+    const [response, setResponse] = useState('')
+    const [isRunning, setIsRunning] = useState(false)
+    const [pendingChatCreation, setPendingChatCreation] = useState(false)
 
-    const responseTimeRef = useRef<number>(0.0);
+    const responseTimeRef = useRef(0.0);
     const ref = useRef<HTMLDivElement>(null)
 
     useEffect(() => {
@@ -29,14 +31,27 @@ function ChatBox({ threadId }: props) {
     useEffect(() => {
         if (!response.trim()) return
         setChats(prev => prev.map(chat => chat.id === 'running'
-            ? { ...chat, response}
+            ? { ...chat, response }
             : chat))
     }, [response])
 
+    useEffect(() => {
+        loadChats()
+    }, [])
+
+    useEffect(() => {
+        if(!pendingChatCreation) return
+        CreateChat(chats[chats.length - 1])
+        setPendingChatCreation(false)
+    }, [pendingChatCreation])
+
+    const loadChats = async () => {
+        const res = await GetChatsByThread(threadId)
+        setChats(res)
+    }
 
     const generateResponse = async () => {
         if (!question.trim() || isRunning) return
-        setResponseTime(0.0)
         setQuestion('')
         setIsRunning(true)
         ref.current!.innerText = ''
@@ -109,7 +124,10 @@ function ChatBox({ threadId }: props) {
             ? { ...chat, id: new Date().toISOString(), responseTime: responseTimeRef.current }
             : chat))
         setResponse('')
+        setResponseTime(0.0)
+        setPendingChatCreation(true)
     }
+
 
     return (
         <div className='text-sm h-full flex flex-col'>
@@ -169,7 +187,13 @@ function ChatBox({ threadId }: props) {
                         <div
                             ref={ref}
                             contentEditable
+                            onKeyDown={e => e.key === 'Enter' && (e.preventDefault(), generateResponse())}
                             onInput={e => setQuestion(e.currentTarget.textContent || '')}
+                            onPaste={e => {
+                                e.preventDefault();
+                                var text = e.clipboardData.getData('text/plain');
+                                document.execCommand("insertHTML", false, text);
+                            }}
                             className='w-full relative z-10 outline-none leading-5 pt-1.5'
                         >
                         </div>

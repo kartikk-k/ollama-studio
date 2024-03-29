@@ -12,12 +12,12 @@ interface props {
 
 function Chats({ chats, responseTime }: props) {
 
-
     const ref = useRef<HTMLDivElement>(null)
+
     useEffect(() => {
         if (!ref.current) return
         ref.current.scrollTop = ref.current.scrollHeight
-    }, [responseTime])
+    }, [ref.current, responseTime])
 
     return (
         <div
@@ -46,7 +46,7 @@ function Chats({ chats, responseTime }: props) {
                     <div className='p-4 pb-0 bg-[#1D1F22]/20'>
                         <div className='border-b border-border flex items-start pb-4'>
                             <div className='w-40 shrink-0'>
-                                <p className='text-[#28EBA5] font-medium'>Mixtral</p>
+                                <p className='text-[#28EBA5] font-medium'>{chat.model}</p>
                                 <p className='text-[#A1ADB9] text-xxs'>response time: {chat.id === 'running' ? responseTime : chat.responseTime}</p>
                             </div>
 
